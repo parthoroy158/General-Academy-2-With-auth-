@@ -4,6 +4,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Analytics } from "@vercel/analytics/next"
 import { Noto_Sans_Bengali } from 'next/font/google';
+import { Toaster } from "react-hot-toast";
+import AuthProvider from "@/AuthProvider/AuthProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,11 +38,16 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${notoBengali.variable} antialiased max-w-full mx-auto `}
       >
-        <Navbar></Navbar>
-        {children}
-        <Analytics />
+        <AuthProvider>
+          <Navbar></Navbar>
+          <Toaster />
+          {children}
+          <Analytics />
+        </AuthProvider>
+
       </body>
       <Footer></Footer>
+
     </html>
   );
 }
