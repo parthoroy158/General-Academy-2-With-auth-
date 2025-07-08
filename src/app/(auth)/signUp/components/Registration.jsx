@@ -1,22 +1,36 @@
 "use client"
+
 import registerUser from '@/app/actions/auth/registerUser';
+import { signIn } from 'next-auth/react';
 import React from 'react';
 import toast from 'react-hot-toast';
 
 const Registration = () => {
     const handleSubmit = async (e) => {
+
+
         e.preventDefault()
         const form = e.target;
         const name = form.name.value;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email,name, password)
+        console.log(email, name, password)
 
-        const response = await registerUser({name, email, password });
+        const response = await registerUser({ name, email, password });
 
         if (response.success) {
             toast.success('Registration Successfully Done');
             form.reset()
+            const loginResult = await signIn("credentials", {
+                redirect: true,
+                email,
+                password,
+                callbackUrl: ("/"),
+            });
+
+            if (loginResult?.error) {
+                setError("Auto login failed");
+            }
         } else {
             toast.error(response.message || 'Registration Failed');
         }

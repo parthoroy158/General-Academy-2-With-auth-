@@ -4,11 +4,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { signOut } from "next-auth/react"
+import { IoNotificationsOutline } from "react-icons/io5";
+
+
 
 const Navbar = () => {
     const pathname = usePathname()
     const { data: session, status } = useSession();
-    console.log("This is the user:", session)
+    console.log("This is the user:", session, status)
+
+
+
 
     const navItems = [
         { href: '/', label: 'হোম' },
@@ -17,12 +23,20 @@ const Navbar = () => {
         { href: '/demoClass', label: 'ডেমো ক্লাস' },
         { href: '/contactUs', label: 'যোগাযোগ', isButton: true },
 
+
+
     ]
 
     if (!session) {
-        navItems.push({ href: '/logIn', label: 'Log In' },
-            { href: '/signUp', label: 'Sign Up' },)
+        navItems.push(
+
+            { href: '/logIn', label: 'Log In' },
+            { href: '/signUp', label: 'Sign Up' },
+
+        )
     }
+
+
 
 
     const navOptions = (
@@ -51,7 +65,7 @@ const Navbar = () => {
 
 
     return (
-        <div className="w-full fixed top-0 z-20 bg-gradient-to-r from-[#e6f0fb] to-[#f5f5ff] dark:from-gray-900 dark:to-gray-800 shadow-sm">
+        <div className="w-full fixed top-0 z-20 bg-gradient-to-r from-[#e6f0fb] to-[#f5f5ff] dark:bg-blue-100 dark:to-gray-200 shadow-sm">
             <div className="navbar max-w-7xl mx-auto px-4 py-2 text-black dark:text-white flex items-center justify-between">
 
                 {/* Navbar Start */}
@@ -61,7 +75,7 @@ const Navbar = () => {
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 dark:text-white"
+                                className="h-6 w-6 dark:text-black"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -73,7 +87,7 @@ const Navbar = () => {
                         {/* Mobile Dropdown Menu */}
                         <div
                             tabIndex={0}
-                            className="menu menu-sm dropdown-content mt-3 z-[99] p-3 bg-white dark:bg-gray-800 text-black dark:text-white shadow-lg rounded-xl w-64 max-h-80 overflow-y-auto space-y-1"
+                            className="menu menu-sm dropdown-content mt-3 z-[99] p-3 bg-white dark:bg-blue-100 dark:to-gray-200  text-black dark:text-white shadow-lg rounded-xl w-64 max-h-80 overflow-y-auto space-y-1"
                         >
                             <style jsx>{`div::-webkit-scrollbar { display: none; }`}</style>
 
@@ -86,9 +100,18 @@ const Navbar = () => {
                             {/* User Info + Logout */}
                             {session && (
                                 <div className="flex flex-col gap-3">
-                                    <p className="text-sm font-semibold truncate">{session.user.name}</p>
+                                    <div className='flex dark:text-black items-center gap-5 text-black'>
+                                        <Link href='/notifications'>
+
+                                            <div className='flex'>
+                                                <IoNotificationsOutline className='text-xl' /><div className="badge badge-sm text-red-600 " > <sup class="text-xs align-super"></sup>+0</div>
+                                            </div>
+
+                                        </Link>
+                                        <p className="text-sm font-semibold truncate">{session.user.name} hi</p>
+                                    </div>
                                     <button
-                                        className="btn btn-sm bg-red-500 hover:bg-red-600 text-white shadow-2xl transition rounded-md"
+                                        className="btn btn-sm btn-ghost bg-red-400 hover:bg-red-200 text-black border-b-2 border-b-black transition duration-200 shadow-2xl rounded"
                                         onClick={() => signOut()}
                                     >
                                         Log out
@@ -122,13 +145,26 @@ const Navbar = () => {
                     {/* Session Section */}
                     {session ? (
                         <div className="flex items-center gap-4">
-                            <Link href="/" className="truncate max-w-[150px]">
-                                <p className="text-sm font-semibold text-gray-800 dark:text-white hover:underline">
-                                    {session.user.name}
-                                </p>
-                            </Link>
+
+                            <div className='flex dark:text-black items-center gap-5 text-black'>
+                                <Link href='/notifications'>
+
+                                    <div className='flex items-center'>
+                                        <IoNotificationsOutline className='text-xl' />
+                                    </div>
+
+                                </Link>
+                                <Link
+                                    href="/UserProfile"
+                                    className="truncate max-w-[150px] px-2 py-1 rounded-md transition-all duration-200 hover:bg-slate-100 hover:text-black hover:shadow-sm"
+                                >
+                                    <p className="text-sm font-semibold truncate">{session.user.name}</p>
+                                </Link>
+
+                            </div>
+
                             <button
-                                className="btn btn-sm bg-red-500 hover:bg-red-600 text-white transition duration-200 shadow-md rounded-md"
+                                className="btn btn-sm btn-ghost bg-red-400 hover:bg-red-200 text-black border-b-2 border-b-black transition duration-200 shadow-2xl rounded"
                                 onClick={() => signOut()}
                             >
                                 Log out
