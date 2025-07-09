@@ -104,11 +104,17 @@ const Navbar = () => {
                                         <Link href='/notifications'>
 
                                             <div className='flex'>
-                                                <IoNotificationsOutline className='text-xl' /><div className="badge badge-sm text-red-600 " > <sup class="text-xs align-super"></sup>+0</div>
+                                                <IoNotificationsOutline className='text-xl' />
                                             </div>
 
                                         </Link>
-                                        <p className="text-sm font-semibold truncate">{session.user.name} hi</p>
+
+                                        <Link
+                                            href="/UserProfile/basicProfile"
+                                            className="truncate max-w-[150px] px-2 py-1 rounded-md transition-all duration-200 hover:bg-slate-100 hover:text-black hover:shadow-sm"
+                                        >
+                                            <p className="text-sm font-semibold truncate">{session.user.name}</p>
+                                        </Link>
                                     </div>
                                     <button
                                         className="btn btn-sm btn-ghost bg-red-400 hover:bg-red-200 text-black border-b-2 border-b-black transition duration-200 shadow-2xl rounded"
@@ -155,7 +161,7 @@ const Navbar = () => {
 
                                 </Link>
                                 <Link
-                                    href="/UserProfile"
+                                    href="/UserProfile/basicProfile"
                                     className="truncate max-w-[150px] px-2 py-1 rounded-md transition-all duration-200 hover:bg-slate-100 hover:text-black hover:shadow-sm"
                                 >
                                     <p className="text-sm font-semibold truncate">{session.user.name}</p>
@@ -165,7 +171,7 @@ const Navbar = () => {
 
                             <button
                                 className="btn btn-sm btn-ghost bg-red-400 hover:bg-red-200 text-black border-b-2 border-b-black transition duration-200 shadow-2xl rounded"
-                                onClick={() => signOut()}
+                                onClick={() => signOut({ callbackUrl: '/' })}
                             >
                                 Log out
                             </button>

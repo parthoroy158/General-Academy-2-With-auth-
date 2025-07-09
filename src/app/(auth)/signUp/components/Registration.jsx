@@ -17,7 +17,8 @@ const Registration = () => {
         console.log(email, name, password)
 
         const response = await registerUser({ name, email, password });
-
+        console.log("This is the response",response.createdAt)
+        
         if (response.success) {
             toast.success('Registration Successfully Done');
             form.reset()
@@ -27,6 +28,7 @@ const Registration = () => {
                 password,
                 callbackUrl: ("/"),
             });
+
 
             if (loginResult?.error) {
                 setError("Auto login failed");

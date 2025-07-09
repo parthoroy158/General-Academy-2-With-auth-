@@ -24,10 +24,7 @@ export const authOptions = {
                 console.log(credentials)
                 // Add logic here to look up the user from the credentials supplied
                 const user = await loginUser(credentials)
-
-
                 if (user) {
-
                     console.log("This is the user log in attempt:", user)
                     // Any object returned will be saved in `user` property of the JWT
                     return user
@@ -42,6 +39,22 @@ export const authOptions = {
     pages: {
         signIn: "/logIn",
     },
+    callbacks: {
+        async session({ session, token, user }) {
+            if(token){
+                session.user.email = token.email;
+                session.user.role = token.role
+            }
+            return session
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            if(user){
+                token.email = user.email;
+                token.role = user.role;
+            }
+            return token
+        }
+    }
 }
 
 

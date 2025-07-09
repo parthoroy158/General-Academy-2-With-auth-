@@ -9,11 +9,16 @@ const AdminDashBoardNav = ({ activeVideoId }) => {
       label: 'Total User',
       path: 'TotalUser',
     },
+    {
+      id: 2,
+      label: 'Total Admin',
+      path: 'adminMembers',
+    },
     // Add more items here as needed
   ];
 
   return (
-    <nav className="w-full sticky top-0 md:min-h-screen bg-white dark:bg-gray-100 border-b md:border-r border-gray-200 px-6 py-6 rounded shadow-md">
+    <nav className="w-full sticky top-0 md:min-h-screen bg-white dark:bg-gray-100 border-b md:border-r border-gray-200 px-6 py-6 rounded shadow-2xl">
       <h2 className="text-xs font-semibold text-blue-700 uppercase tracking-wide mb-4 bg-blue-300 p-2 rounded-md">
         Demo Class Topics
       </h2>

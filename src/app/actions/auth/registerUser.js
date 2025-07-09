@@ -6,7 +6,7 @@ const registerUser = async (payload) => {
     try {
         console.log('This is the payload data:', payload);
 
-        const userCollections =  dbConnect(collectionNameObj.userCollections);
+        const userCollections = dbConnect(collectionNameObj.userCollections);
 
         // Destructure and validate inputs
         const { email, password, name } = payload;
@@ -26,8 +26,11 @@ const registerUser = async (payload) => {
         if (!existingUser) {
             const hashPassword = await bcrypt.hash(password, 10)
             payload.password = hashPassword
+            payload.createdAt = new Date();
             const result = await userCollections.insertOne(payload);
-            return { success: true, userId: result.insertedId };
+            return { result, success: true, userId: result.insertedId, createdAt: payload.createdAt};
+
+
         }
 
     } catch (error) {
