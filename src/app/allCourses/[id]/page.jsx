@@ -1,4 +1,9 @@
+
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import IframeVideo from '@/app/components/IframeVideo';
+import dbConnect, { collectionNameObj } from '@/lib/dbConnect';
+import { getServerSession } from 'next-auth';
+
 import Link from 'next/link';
 import React from 'react';
 
@@ -7,7 +12,18 @@ export const metadata = {
     keywords: ['General Academy', 'GeneralBD', 'BD General Academy', 'all courses'],
     description: 'All courses,Genetal Academy is a premier online coaching center dedicated to empowering aspiring legal professionals with the knowledge and skills they need to excel in competitive examinations. Specializing in law-focused education, Genetal Academy offers expertly designed courses for a wide range of legal exams, with a special emphasis on BJS',
 }
-const DetailsSinglePage = ({ params }) => {
+const DetailsSinglePage = async ({ params }) => {
+
+    const sessionData = await getServerSession(authOptions)
+
+
+
+    const db = dbConnect(collectionNameObj.userCollections);
+    const res = await db.find({}).toArray()
+
+    const course = res.find(item => item.email == sessionData?.user?.email)
+    console.log("This is the course", course)
+
 
     console.log('This is teh details pages:', params.id)
     const id = params.id
@@ -197,6 +213,9 @@ const DetailsSinglePage = ({ params }) => {
 
     return (
         <div className='w-full bg-gray-50'>
+            <h1>This is the course: {JSON.stringify(sessionData)}</h1>
+
+            <h1 className='text-black'> This is the session: {sessionData?.user?.email || "No session"}</h1>
             <div className="max-w-7xl mx-auto pt-1 px-4 min-h-screen">
                 {/* Course Name */}
                 <div className="flex items-center justify-center mb-8">
@@ -383,6 +402,50 @@ const DetailsSinglePage = ({ params }) => {
                             </div>
 
                         </div>
+
+                        {/* This is the experimantal section-------------------------------------------------------------- */}
+                        {
+                            course?.corses == "bjs19-full" ?
+                                <div className="collapse collapse-arrow bg-white dark:bg-white border border-gray-200 dark:border-gray-700 rounded-xl mb-6 shadow-sm">
+                                    <input type="checkbox" className="peer" />
+
+                                    <div className="collapse-title text-lg font-semibold text-gray-800 dark:text-black peer-checked:text-blue-600 transition-colors">
+                                        Class Video
+                                    </div>
+                                    <div className="collapse-content text-sm text-gray-700 dark:text-black px-4 pb-4 leading-relaxed">
+                                        <ul className="list-disc pl-5 space-y-2">
+                                            {(Array.isArray(data.admission_process)
+                                                ? data.admission_process
+                                                : data.admission_process?.instructions
+                                            )?.map((step, index) => (
+                                                <li key={index}>{step}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                                :
+
+                                <div
+                                    className={`collapse collapse-arrow bg-white dark:bg-white border border-gray-200 dark:border-gray-700 rounded-xl mb-6 shadow-sm ${course?.courses !== "bjs19-full" ? "pointer-events-none opacity-60" : ""
+                                        }`}
+                                >
+                                    <input type="checkbox" className="peer" />
+
+                                    <div className="collapse-title text-lg font-semibold text-gray-800 dark:text-black peer-checked:text-blue-600 transition-colors">
+                                        Class Video
+                                    </div>
+                                    <div className="collapse-content text-sm text-gray-700 dark:text-black px-4 pb-4 leading-relaxed">
+                                        <ul className="list-disc pl-5 space-y-2">
+                                            {(Array.isArray(data.admission_process)
+                                                ? data.admission_process
+                                                : data.admission_process?.instructions
+                                            )?.map((step, index) => (
+                                                <li key={index}>{step}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                        }
                     </div>
 
 
@@ -438,7 +501,7 @@ const DetailsSinglePage = ({ params }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
 
     );
 };
