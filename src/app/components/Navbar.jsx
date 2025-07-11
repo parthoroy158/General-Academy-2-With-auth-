@@ -2,9 +2,11 @@
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react';
+import React, { useState } from 'react';
 import { signOut } from "next-auth/react"
-import { IoNotificationsOutline } from "react-icons/io5";
+import { IoLogInOutline, IoNotificationsOutline } from "react-icons/io5";
+import { CgProfile } from 'react-icons/cg';
+import { RiArrowDropDownLine } from 'react-icons/ri';
 
 
 
@@ -34,6 +36,12 @@ const Navbar = () => {
             { href: '/signUp', label: 'Sign Up' },
 
         )
+    }
+
+    const [open, setOpen] = useState(false);
+
+    const closeDropdown = () => {
+        setOpen(false);
     }
 
 
@@ -160,21 +168,47 @@ const Navbar = () => {
                                     </div>
 
                                 </Link>
-                                <Link
-                                    href="/UserProfile/basicProfile"
-                                    className="truncate max-w-[150px] px-2 py-1 rounded-md transition-all duration-200 hover:bg-slate-100 hover:text-black hover:shadow-sm"
-                                >
-                                    <p className="text-sm font-semibold truncate">{session.user.name}</p>
-                                </Link>
+                                <div className="flex items-center space-x-2">
+
+
+                                    <div className={`dropdown dropdown-center ${open ? 'hidden' : ''}`}>
+                                        <div tabIndex={0} role="" className=" flex items-center text-2xl">
+                                            <p className="text-sm font-semibold truncate">{session?.user?.name}</p>
+                                            <RiArrowDropDownLine />
+                                        </div>
+                                        <ul
+                                            tabIndex={0}
+                                            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+                                        >
+
+                                            <li className='mb-1'>
+
+                                                <Link
+                                                    href="/UserProfile/basicProfile"
+                                                    className="truncate w-full px-2  rounded-md transition-all bg-slate-100 duration-200 hover:bg-slate-100 hover:text-black hover:shadow-sm" onClick={closeDropdown}
+                                                >
+                                                    <CgProfile />Profile
+                                                </Link>
+
+
+
+                                            </li>
+                                            <div className='divider m-0 p-0'></div>
+                                            <li>
+                                                <a
+                                                    className=" dark:text-black text-black rounded"
+                                                    onClick={() => signOut({ callbackUrl: '/' })}
+                                                >
+                                                    <IoLogInOutline className='text-lg' /> Log out
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
 
                             </div>
 
-                            <button
-                                className="btn btn-sm btn-ghost bg-red-400 hover:bg-red-200 text-black border-b-2 border-b-black transition duration-200 shadow-2xl rounded"
-                                onClick={() => signOut({ callbackUrl: '/' })}
-                            >
-                                Log out
-                            </button>
+
                         </div>
                     ) : (
                         ""

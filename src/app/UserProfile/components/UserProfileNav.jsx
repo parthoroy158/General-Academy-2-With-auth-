@@ -6,6 +6,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { RiAdminFill } from "react-icons/ri";
+import { CgProfile } from "react-icons/cg";
 
 const UserProfileNav = async () => {
     // Get the session
@@ -56,16 +59,16 @@ const UserProfileNav = async () => {
                 <nav className="w-full space-y-2 text-xs md:text-sm">
                     {[
                         // Always show basic profile
-                        { label: 'Profile', href: '/UserProfile/basicProfile' },
+                        { icon: <CgProfile />, label: 'Profile', href: '/UserProfile/basicProfile' },
 
                         // Conditionally show admin dashboard
                         ...(singleData?.role === 'admin'
-                            ? [{ label: 'Admin Dashboard', href: '/adminDashboard/TotalUser' }]
+                            ? [{ icon: <RiAdminFill />, label: 'Admin Dashboard', href: '/adminDashboard/TotalUser' }, { icon: <IoMdNotificationsOutline className='text-lg' />, label: 'Post Notifications', href: '/UserProfile/postNotifications' }]
                             : []),
-                    ].map(({ label, href }) => (
+                    ].map(({ label, href, icon }) => (
                         <Link key={label} href={href}>
-                            <div className="flex items-center px-3 py-2 hover:bg-blue-600 rounded cursor-pointer">
-                                <span className="mr-2">📌</span>
+                            <div className="flex items-center px-3 py-2 rounded cursor-pointer transition-all duration-200 ease-in-out hover:bg-indigo-600 hover:text-white hover:shadow-md hover:scale-[1.02]">
+                                <span className="mr-2"> {icon} </span>
                                 {label}
                             </div>
                         </Link>

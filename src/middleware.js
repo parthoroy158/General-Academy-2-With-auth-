@@ -11,7 +11,7 @@ export const middleware = async (req) => {
     const isAdminUser = token?.role === "admin";
     const pathname = req.nextUrl.pathname;
 
-    const isAdminSpecificRoute = pathname.startsWith("/adminDashboard/TotalUser");
+    const isAdminSpecificRoute = pathname.startsWith("/adminDashboard/TotalUser") || pathname.startsWith("/UserProfile/postNotifications");
 
     // Restrict access to specific route for non-admin users
     if (isAdminSpecificRoute && !isAdminUser) {
@@ -24,5 +24,5 @@ export const middleware = async (req) => {
 };
 
 export const config = {
-    matcher: ["/adminDashboard/:path*", "/UserProfile/:path*"],
+    matcher: ["/adminDashboard/:path*", "/UserProfile/:path*", ],
 };

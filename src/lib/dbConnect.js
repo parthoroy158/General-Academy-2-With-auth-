@@ -3,7 +3,8 @@ import React from 'react';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
 export const collectionNameObj = {
-    userCollections: 'user_test'
+    userCollections: 'user_test',
+    postNotifications: 'post_test_notifications'
 }
 
 
